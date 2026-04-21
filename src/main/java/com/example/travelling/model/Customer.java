@@ -4,10 +4,6 @@ import java.util.regex.Pattern;
 
 public class Customer {
 
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
-    private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{9}$");
-
     private final String firstName;
     private final String lastName;
     private final String email;
@@ -24,26 +20,19 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
-    public boolean isEmailValid() {
-        return EMAIL_PATTERN.matcher(email).matches();
+    public String getFirstName() {
+        return firstName;
     }
 
-    public boolean isPhoneNumberValid() {
-        return PHONE_PATTERN.matcher(phoneNumber).matches();
+    public String getLastName() {
+        return lastName;
     }
 
-
-    public boolean isValid() {
-        return isNameValid(firstName)
-                && isNameValid(lastName)
-                && isEmailValid()
-                && isPhoneNumberValid();
+    public String getEmail() {
+        return email;
     }
 
-    private boolean isNameValid(String name) {
-        return name != null && !name.trim().isEmpty();
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
-
-
-
 }

@@ -1,4 +1,7 @@
 package com.example.travelling.io;
 
-public interface Reader {
+import java.util.List;
+
+public interface Reader<T> {
+    List<T> read();
 }

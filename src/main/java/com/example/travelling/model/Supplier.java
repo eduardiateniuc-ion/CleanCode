@@ -4,13 +4,6 @@ import java.util.regex.Pattern;
 
 public class Supplier {
 
-    private static final Pattern EMAIL_PATTERN =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
-                    Pattern.CASE_INSENSITIVE);
-
-    private static final Pattern PHONE_PATTERN =
-            Pattern.compile("^\\d{10}$");
-
     private final String companyName;
     private final String country;
     private final String email;
@@ -36,56 +29,33 @@ public class Supplier {
         this.negativeComments = negativeComments;
     }
 
-    public boolean isValid() {
-        return isEmailValid()
-                && isPhoneNumberValid()
-                && flightsCount >= 0
-                && positiveComments >= 0
-                && negativeComments >= 0
-                && positiveComments + negativeComments <= flightsCount;
+
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public double getCompanyRating() {
-        int totalComments = positiveComments + negativeComments;
-
-        if (totalComments == 0) {
-            return 0.0;
-        }
-
-        if (totalComments > flightsCount
-                || positiveComments > flightsCount
-                || negativeComments > flightsCount) {
-            throw new IllegalArgumentException("Comments count exceeds flights count");
-        }
-
-        double reviewScore = (double) positiveComments / totalComments;
-
-        double experience = Math.min(1.0, (double) flightsCount / 100.0);
-
-        double rating = 5.0 * reviewScore * experience;
-
-        return roundToOneDecimal(rating);
+    public String getCountry() {
+        return country;
     }
 
-    public String getComfortLevel() {
-        double rating = getCompanyRating();
-
-        if (rating >= 4.0) return "Premium";
-        if (rating >= 3.0) return "Comfort";
-        if (rating >= 1.0) return "So-So...";
-
-        return "Low";
+    public String getEmail() {
+        return email;
     }
 
-    public boolean isEmailValid() {
-        return EMAIL_PATTERN.matcher(email).matches();
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public boolean isPhoneNumberValid() {
-        return PHONE_PATTERN.matcher(phoneNumber).matches();
+    public int getNegativeComments() {
+        return negativeComments;
     }
 
-    private double roundToOneDecimal(double value) {
-        return Math.round(value * 10) / 10.0;
+    public int getPositiveComments() {
+        return positiveComments;
     }
+
+    public int getFlightsCount() {
+        return flightsCount;
+    }
+
 }

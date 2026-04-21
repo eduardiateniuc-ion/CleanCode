@@ -1,6 +1,8 @@
 package com.example.travelling.service;
 
-public interface Supplier {
-    double getCompanyRank();
-    int getComfortLevel();
+import com.example.travelling.model.Supplier;
+
+public interface SupplierService {
+    double getCompanyRank(Supplier supplier);
+    String getComfortLevel(Supplier supplier);
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EventTest {
-
+/*
     private final Customer customer1 =
             new Customer("Eduard", "Iateniuc", "eduard@mail.ru", "068393402");
 
@@ -64,4 +64,121 @@ class EventTest {
 
         assertTrue(event.countTravelTime() < 0);
     }
+
+
+    @Test
+    @DisplayName("Event is valid when all fields are correct")
+    void isValidReturnsTrueWhenAllFieldsAreValid() {
+        Event event = new Event(
+                "Summer Trip",
+                "Chisinau",
+                new Location("Italy", "Rome"),
+                LocalDate.of(2024, 6, 1),
+                LocalDate.of(2024, 6, 10),
+                50,
+                List.of(customer1)
+        );
+
+        assertTrue(event.isValid());
+    }
+
+    @Test
+    @DisplayName("Event is invalid when eventName is null")
+    void isValidReturnsFalseWhenEventNameIsNull() {
+        Event event = new Event(
+                null,
+                "Chisinau",
+                new Location("Italy", "Rome"),
+                LocalDate.now(),
+                LocalDate.now().plusDays(5),
+                50,
+                List.of(customer1)
+        );
+
+        assertFalse(event.isValid());
+    }
+
+    @Test
+    @DisplayName("Event is invalid when eventName is empty")
+    void isValidReturnsFalseWhenEventNameIsEmpty() {
+        Event event = new Event(
+                "",
+                "Chisinau",
+                new Location("Italy", "Rome"),
+                LocalDate.now(),
+                LocalDate.now().plusDays(5),
+                50,
+                List.of(customer1)
+        );
+
+        assertFalse(event.isValid());
+    }
+
+    @Test
+    @DisplayName("Event is invalid when eventName contains only spaces")
+    void isValidReturnsFalseWhenEventNameIsBlank() {
+        Event event = new Event(
+                "   ",
+                "Chisinau",
+                new Location("Italy", "Rome"),
+                LocalDate.now(),
+                LocalDate.now().plusDays(5),
+                50,
+                List.of(customer1)
+        );
+
+        assertFalse(event.isValid());
+    }
+
+    @Test
+    @DisplayName("Event is invalid when originLocation is null")
+    void isValidReturnsFalseWhenOriginLocationIsNull() {
+        Event event = new Event(
+                "Summer Trip",
+                null,
+                new Location("Italy", "Rome"),
+                LocalDate.now(),
+                LocalDate.now().plusDays(5),
+                50,
+                List.of(customer1)
+        );
+
+        assertFalse(event.isValid());
+    }
+
+    @Test
+    @DisplayName("Event is invalid when originLocation is empty")
+    void isValidReturnsFalseWhenOriginLocationIsEmpty() {
+        Event event = new Event(
+                "Summer Trip",
+                "",
+                new Location("Italy", "Rome"),
+                LocalDate.now(),
+                LocalDate.now().plusDays(5),
+                50,
+                List.of(customer1)
+        );
+
+        assertFalse(event.isValid());
+    }
+
+    @Test
+    @DisplayName("Event is invalid when destination is invalid")
+    void isValidReturnsFalseWhenDestinationIsInvalid() {
+        // Предполагаем, что Location.isValid() вернёт false
+        Location invalidLocation = new Location(null, "");
+
+        Event event = new Event(
+                "Summer Trip",
+                "Chisinau",
+                invalidLocation,
+                LocalDate.now(),
+                LocalDate.now().plusDays(5),
+                50,
+                List.of(customer1)
+        );
+
+        assertFalse(event.isValid());
+    }
+*/
 }

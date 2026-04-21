@@ -9,13 +9,11 @@ public class Location {
         this.city = city;
     }
 
-    public boolean isValid() {
-        if (country == null || country.trim().isEmpty()) {
-            return false;
-        }
-        if (city == null || city.trim().isEmpty()) {
-            return false;
-        }
-        return true;
+    public String getCountry() {
+        return country;
+    }
+
+    public String getCity() {
+        return city;
     }
 }

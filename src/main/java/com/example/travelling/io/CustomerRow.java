@@ -1,4 +1,5 @@
 package com.example.travelling.io;
 
-public record CustomerRow() {
-}
+import com.example.travelling.model.Customer;
+
+public record CustomerRow(String eventName, Customer customer) {}

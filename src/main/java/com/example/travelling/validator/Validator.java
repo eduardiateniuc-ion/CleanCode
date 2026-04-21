@@ -1,4 +1,5 @@
 package com.example.travelling.validator;
 
-public class Validator {
+public interface Validator<T> {
+    boolean isValid(T object);
 }

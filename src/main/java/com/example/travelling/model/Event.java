@@ -9,27 +9,51 @@ public class Event {
     private String eventName;
     private String originLocation;
     private Location destination;
+    private Supplier supplier;
     private LocalDate startTime;
     private LocalDate endTime;
     private int capacity;
     private List<Customer> customers;
 
-    public Event(String eventName, String originLocation, Location destination, LocalDate startTime, LocalDate endTime, int capacity, List<Customer> customers) {
+    public Event(String eventName, String originLocation, Location destination, Supplier supplier, LocalDate startTime, LocalDate endTime, int capacity) {
         this.eventName = eventName;
         this.originLocation = originLocation;
         this.destination = destination;
+        this.supplier = supplier;
         this.startTime = startTime;
         this.endTime = endTime;
         this.capacity = capacity;
-        this.customers = customers;
     }
 
-    public int planeLoad(){
-        return (customers.size()*100)/capacity ;
+    public List<Customer> getCustomers() {
+        return customers;
     }
 
-    public int countTravelTime(){
-        Period period = Period.between(startTime, endTime);
-        return period.getDays();
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public LocalDate getStartTime() {
+        return startTime;
+    }
+
+    public LocalDate getEndTime() {
+        return endTime;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public String getOriginLocation() {
+        return originLocation;
+    }
+
+    public Location getDestination() {
+        return destination;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
     }
 }
