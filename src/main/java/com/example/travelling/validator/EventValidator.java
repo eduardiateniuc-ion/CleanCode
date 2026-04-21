@@ -2,6 +2,7 @@ package com.example.travelling.validator;
 
 import com.example.travelling.model.Event;
 import com.example.travelling.model.Location;
+import com.example.travelling.model.Supplier;
 
 public class EventValidator implements Validator<Event> {
 
@@ -13,7 +14,9 @@ public class EventValidator implements Validator<Event> {
         return isNotBlank(event.getEventName())
                 && isNotBlank(event.getOriginLocation())
                 && isDestinationValid(event.getDestination())
-                && isDatesValid(event);
+                && isSupplierValid(event.getSupplier())
+                && isDatesValid(event)
+                && event.getCapacity() > 0;
     }
 
 
@@ -30,6 +33,10 @@ public class EventValidator implements Validator<Event> {
             return false;
         }
         return !event.getEndTime().isBefore(event.getStartTime());
+    }
+
+    private boolean isSupplierValid(Supplier supplier) {
+        return supplier != null;
     }
 
     private boolean isNotBlank(String value) {
