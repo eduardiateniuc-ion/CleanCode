@@ -1,0 +1,3 @@
+eventName,originLocation,destinationCity,destinationCountry,supplierCompany,supplierEmail,supplierPhone,supplierCountry,flightsCount,positiveComments,negativeComments,startDate,endDate,capacity
+Summer Italy Tour,Kyiv,Rome,Italy,SkyTravel,contact@skytravel.com,123456789,Ukraine,120,90,20,2026-06-10,2026-06-17,30
+Alps Adventure,Warsaw,Innsbruck,Austria,MountainFly,support@mountainfly.com,987654321,Poland,150,120,15,2026-07-05,2026-07-12,25

@@ -5,24 +5,26 @@ import com.example.travelling.model.Location;
 import com.example.travelling.model.Supplier;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventCsvReader implements Reader<Event> {
 
-    private final String filePath;
+    private final String resourcePath;
 
-    public EventCsvReader(String filePath) {
-        this.filePath = filePath;
+    public EventCsvReader(String resourcePath) {
+        this.resourcePath = resourcePath;
     }
 
     @Override
     public List<Event> read() {
         List<Event> events = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(openResource(), StandardCharsets.UTF_8))) {
             reader.readLine(); // header
             String line;
 
@@ -34,6 +36,16 @@ public class EventCsvReader implements Reader<Event> {
         }
 
         return events;
+    }
+
+    private InputStream openResource() {
+        InputStream inputStream = Thread.currentThread()
+                .getContextClassLoader()
+                .getResourceAsStream(resourcePath);
+        if (inputStream == null) {
+            throw new IllegalArgumentException("CSV resource not found: " + resourcePath);
+        }
+        return inputStream;
     }
 
     private Event parse(String line) {

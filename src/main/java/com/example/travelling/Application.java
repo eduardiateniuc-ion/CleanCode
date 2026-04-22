@@ -1,5 +1,7 @@
 package com.example.travelling;
 
+import com.example.travelling.config.CsvImportConfig;
+import com.example.travelling.config.DatabaseConfig;
 import com.example.travelling.io.CustomerCsvReader;
 import com.example.travelling.io.EventCsvReader;
 import com.example.travelling.repository.CustomerRepository;
@@ -18,33 +20,19 @@ import java.sql.DriverManager;
 public class Application {
 
     public static void main(String[] args) {
-        Config config = Config.from(args);
-
-        EventCsvReader eventReader = new EventCsvReader(config.eventsCsvPath());
-        CustomerCsvReader customerReader = new CustomerCsvReader(config.customersCsvPath());
+        DatabaseConfig databaseConfig = DatabaseConfig.fromEnvironment();
+        CsvImportConfig csvImportConfig = CsvImportConfig.defaultConfig();
 
         try (Connection connection = DriverManager.getConnection(
-                config.jdbcUrl(),
-                config.dbUser(),
-                config.dbPassword()
+                databaseConfig.jdbcUrl(),
+                databaseConfig.dbUser(),
+                databaseConfig.dbPassword()
         )) {
             connection.setAutoCommit(false);
 
-            EventValidator eventValidator = new EventValidator();
-            LocationValidator locationValidator = new LocationValidator();
-            SupplierValidator supplierValidator = new SupplierValidator();
-            CustomerValidator customerValidator = new CustomerValidator();
-
-            ImportService importService = new ImportService(
-                    new EventRepository(connection, eventValidator),
-                    new LocationRepository(connection, locationValidator),
-                    new SupplierRepository(connection, supplierValidator),
-                    new CustomerRepository(connection, customerValidator),
-                    eventValidator,
-                    locationValidator,
-                    supplierValidator,
-                    customerValidator
-            );
+            ImportService importService = buildImportService(connection);
+            EventCsvReader eventReader = new EventCsvReader(csvImportConfig.eventsResourcePath());
+            CustomerCsvReader customerReader = new CustomerCsvReader(csvImportConfig.customersResourcePath());
 
             try {
                 importService.importData(eventReader.read(), customerReader.read());
@@ -60,33 +48,21 @@ public class Application {
         }
     }
 
-    private record Config(
-            String eventsCsvPath,
-            String customersCsvPath,
-            String jdbcUrl,
-            String dbUser,
-            String dbPassword
-    ) {
-        static Config from(String[] args) {
-            if (args.length < 2) {
-                throw new IllegalArgumentException(
-                        "Usage: java ...Application <events-csv-path> <customers-csv-path>"
-                );
-            }
+    private static ImportService buildImportService(Connection connection) {
+        EventValidator eventValidator = new EventValidator();
+        LocationValidator locationValidator = new LocationValidator();
+        SupplierValidator supplierValidator = new SupplierValidator();
+        CustomerValidator customerValidator = new CustomerValidator();
 
-            String jdbcUrl = readRequiredEnv("DB_URL");
-            String dbUser = readRequiredEnv("DB_USER");
-            String dbPassword = readRequiredEnv("DB_PASSWORD");
-
-            return new Config(args[0], args[1], jdbcUrl, dbUser, dbPassword);
-        }
-
-        private static String readRequiredEnv(String key) {
-            String value = System.getenv(key);
-            if (value == null || value.isBlank()) {
-                throw new IllegalArgumentException("Missing required environment variable: " + key);
-            }
-            return value;
-        }
+        return new ImportService(
+                new EventRepository(connection, eventValidator),
+                new LocationRepository(connection, locationValidator),
+                new SupplierRepository(connection, supplierValidator),
+                new CustomerRepository(connection, customerValidator),
+                eventValidator,
+                locationValidator,
+                supplierValidator,
+                customerValidator
+        );
     }
 }

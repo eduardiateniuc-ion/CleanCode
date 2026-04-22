@@ -1,27 +1,26 @@
 package com.example.travelling.io;
 
 import com.example.travelling.model.Customer;
-import com.example.travelling.model.Event;
-import com.example.travelling.model.Location;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.time.LocalDate;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerCsvReader {
 
-    private final String filePath;
+    private final String resourcePath;
 
-    public CustomerCsvReader(String filePath) {
-        this.filePath = filePath;
+    public CustomerCsvReader(String resourcePath) {
+        this.resourcePath = resourcePath;
     }
 
     public List<CustomerRow> read() {
         List<CustomerRow> rows = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(openResource(), StandardCharsets.UTF_8))) {
             reader.readLine();
             String line;
 
@@ -43,6 +42,16 @@ public class CustomerCsvReader {
         }
 
         return rows;
+    }
+
+    private InputStream openResource() {
+        InputStream inputStream = Thread.currentThread()
+                .getContextClassLoader()
+                .getResourceAsStream(resourcePath);
+        if (inputStream == null) {
+            throw new IllegalArgumentException("CSV resource not found: " + resourcePath);
+        }
+        return inputStream;
     }
 }
 
