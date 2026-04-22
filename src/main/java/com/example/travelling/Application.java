@@ -20,49 +20,68 @@ import java.sql.DriverManager;
 public class Application {
 
     public static void main(String[] args) {
-        DatabaseConfig databaseConfig = DatabaseConfig.fromEnvironment();
-        CsvImportConfig csvImportConfig = CsvImportConfig.defaultConfig();
 
-        try (Connection connection = DriverManager.getConnection(
-                databaseConfig.jdbcUrl(),
-                databaseConfig.dbUser(),
-                databaseConfig.dbPassword()
-        )) {
+        CsvImportConfig csv = CsvImportConfig.defaultConfig();
+        DatabaseConfig db = DatabaseConfig.fromEnvironment();
+
+        EventCsvReader eventReader =
+                new EventCsvReader(csv.eventsResourcePath());
+        CustomerCsvReader customerReader =
+                new CustomerCsvReader(csv.customersResourcePath());
+
+        try (Connection connection = createConnection(db)) {
+
             connection.setAutoCommit(false);
 
-            ImportService importService = buildImportService(connection);
-            EventCsvReader eventReader = new EventCsvReader(csvImportConfig.eventsResourcePath());
-            CustomerCsvReader customerReader = new CustomerCsvReader(csvImportConfig.customersResourcePath());
+            EventValidator eventValidator = new EventValidator();
+            LocationValidator locationValidator = new LocationValidator();
+            SupplierValidator supplierValidator = new SupplierValidator();
+            CustomerValidator customerValidator = new CustomerValidator();
+
+            ImportService importService = new ImportService(
+                    new EventRepository(connection, eventValidator),
+                    new LocationRepository(connection, locationValidator),
+                    new SupplierRepository(connection, supplierValidator),
+                    new CustomerRepository(connection, customerValidator),
+                    eventValidator,
+                    locationValidator,
+                    supplierValidator,
+                    customerValidator
+            );
 
             try {
-                importService.importData(eventReader.read(), customerReader.read());
+                importService.importData(
+                        eventReader.read(),
+                        customerReader.read()
+                );
                 connection.commit();
-                System.out.println("Import completed: data saved to Locations, Suppliers, Events, Customers and Event_Customers.");
+                System.out.println(
+                        "Import completed: data saved successfully."
+                );
             } catch (Exception e) {
                 connection.rollback();
                 throw e;
             }
+
         } catch (Exception e) {
             System.err.println("Import failed: " + e.getMessage());
             throw new RuntimeException("Application execution failed", e);
         }
     }
 
-    private static ImportService buildImportService(Connection connection) {
-        EventValidator eventValidator = new EventValidator();
-        LocationValidator locationValidator = new LocationValidator();
-        SupplierValidator supplierValidator = new SupplierValidator();
-        CustomerValidator customerValidator = new CustomerValidator();
+    private static Connection createConnection(DatabaseConfig db)
+            throws Exception {
 
-        return new ImportService(
-                new EventRepository(connection, eventValidator),
-                new LocationRepository(connection, locationValidator),
-                new SupplierRepository(connection, supplierValidator),
-                new CustomerRepository(connection, customerValidator),
-                eventValidator,
-                locationValidator,
-                supplierValidator,
-                customerValidator
+        if (db.dbUser() == null || db.dbUser().isBlank()) {
+            // ✅ Windows Authentication
+            return DriverManager.getConnection(db.jdbcUrl());
+        }
+
+        // ✅ SQL Authentication
+        return DriverManager.getConnection(
+                db.jdbcUrl(),
+                db.dbUser(),
+                db.dbPassword()
         );
     }
 }

@@ -1,3 +1,5 @@
-eventName,originLocation,destinationCity,destinationCountry,supplierCompany,supplierEmail,supplierPhone,supplierCountry,flightsCount,positiveComments,negativeComments,startDate,endDate,capacity
-Summer Italy Tour,Kyiv,Rome,Italy,SkyTravel,contact@skytravel.com,123456789,Ukraine,120,90,20,2026-06-10,2026-06-17,30
-Alps Adventure,Warsaw,Innsbruck,Austria,MountainFly,support@mountainfly.com,987654321,Poland,150,120,15,2026-07-05,2026-07-12,25
+Summer Italy Tour,Kyiv,Rome,Italy,SkyTravel,Italy,contact@skytravel.com,380012345,120,90,20,2026-06-10,2026-06-17,30
+Alps Adventure,Warsaw,Innsbruck,Austria,MountainFly,Austria,support@mountainfly.com,436411122,150,120,15,2026-07-05,2026-07-12,25
+Paris Highlights,Berlin,Paris,France,EuroTrips,France,info@eurotrips.com,336778899,100,70,20,2026-05-20,2026-05-25,20
+Barcelona Fiesta,Madrid,Barcelona,Spain,SunTravel,Spain,hello@suntravel.es,349311223,130,100,20,2026-08-01,2026-08-08,35
+Nordic Escape,Oslo,Stockholm,Sweden,ScandiTours,Sweden,contact@scanditours.se,468991122,90,60,10,2026-09-10,2026-09-16,18

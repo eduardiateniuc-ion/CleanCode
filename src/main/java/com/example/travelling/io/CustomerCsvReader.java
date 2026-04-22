@@ -20,12 +20,32 @@ public class CustomerCsvReader {
     public List<CustomerRow> read() {
         List<CustomerRow> rows = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(openResource(), StandardCharsets.UTF_8))) {
-            reader.readLine();
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(openResource(), StandardCharsets.UTF_8))) {
+
             String line;
 
+            // ✅ читаем header, даже если он с BOM
+            reader.readLine();
+
             while ((line = reader.readLine()) != null) {
+
+                // ✅ Удаляем BOM, табы, non-printable
+                line = line.replace("\uFEFF", "").trim();
+
+                // ✅ Пропускаем всё пустое
+                if (line.isEmpty()) {
+                    continue;
+                }
+
                 String[] v = line.split(",");
+
+                // ✅ ГЛАВНАЯ ЗАЩИТА
+                if (v.length < 5) {
+                    throw new IllegalArgumentException(
+                            "Invalid customers.csv line (expected 5 columns): [" + line + "]"
+                    );
+                }
 
                 rows.add(new CustomerRow(
                         v[0].trim(),
@@ -43,6 +63,7 @@ public class CustomerCsvReader {
 
         return rows;
     }
+
 
     private InputStream openResource() {
         InputStream inputStream = Thread.currentThread()

@@ -1,4 +1,18 @@
-eventName,firstName,lastName,email,phone
-Summer Italy Tour,Olena,Petrenko,olena.petrenko@example.com,111222333
-Summer Italy Tour,Maksym,Ivanov,maksym.ivanov@example.com,444555666
-Alps Adventure,Anna,Kowalski,anna.kowalski@example.com,777888999
+Summer Italy Tour,Olena,Petrenko,olena.petrenko@example.com,380931112
+Summer Italy Tour,Maksym,Ivanov,maksym.ivanov@example.com,380932233
+Summer Italy Tour,Iryna,Shevchenko,iryna.shevchenko@example.com,380933334
+Alps Adventure,Anna,Kowalski,anna.kowalski@example.com,485002111
+Alps Adventure,Piotr,Nowak,piotr.nowak@example.com,485002223
+Alps Adventure,Kasia,Zielinska,kasia.zielinska@example.com,485003334
+
+Paris Highlights,Lucas,Martin,lucas.martin@example.com,336101112
+Paris Highlights,Emma,Durand,emma.durand@example.com,336202223
+Paris Highlights,Hugo,Bernard,hugo.bernard@example.com,336303334
+
+Barcelona Fiesta,Carlos,Gomez,carlos.gomez@example.com,346111222
+Barcelona Fiesta,Lucia,Perez,lucia.perez@example.com,346222333
+Barcelona Fiesta,Marco,Rossi,marco.rossi@example.com,346333344
+
+Nordic Escape,Erik,Johansson,erik.j@example.com,701112233
+Nordic Escape,Anna,Lindberg,anna.l@example.com,467223344
+Nordic Escape,Oskar,Nilsson,oskar.n@example.com,467333445
